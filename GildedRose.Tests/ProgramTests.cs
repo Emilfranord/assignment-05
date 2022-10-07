@@ -131,6 +131,18 @@ public class ProgramTests
     }
 
     [Fact]
+    public void BackstagePassIncreaseValueMoreWhen3DaysOut()
+    {
+        var app = new Program(){
+            Items = new List<Item>{
+                new Item { Name = "Backstage passes to a TAFKAL80ETC concert", SellIn = 3, Quality = 10}
+            }
+        };
+        app.UpdateQuality();
+        app.Items[0].Quality.Should().Be(13);
+    }
+
+    [Fact]
     public void BackstagePassLooseValueWhenUpdatingOnZeroDay()
     {
         var app = new Program(){
