@@ -70,20 +70,6 @@ public class ProgramTests
         app.Items[0].Quality.Should().Be(50);
     }
 
-    [Fact (Skip = "Not implemented yet")]
-    public void UpdateQuality_Quality_Of_Sulfuras_Is_Always_80() {
-                var app = new Program()
-        {
-            Items = new List<Item> {
-            new Item { Name = "Sulfuras, Hand of Ragnaros", SellIn = 0, Quality = 70 }
-            }
-        };
-
-        app.UpdateQuality();
-
-        app.Items[0].Quality.Should().Be(80);
-    }
-
     [Fact]
     public void SULFURAS_SHOULD_NOT_CHANGE_QUALITY()
     {
@@ -143,6 +129,26 @@ public class ProgramTests
 
         //Assert
         app.Items[0].Quality.Should().Be(1);
+    }
+
+
+    [Fact]
+    public void AgedBrieShoudStopAt50()
+    {
+        //Arrange
+        var app = new Program()
+        {
+            Items = new List<Item>
+            {
+                new Item { Name = "Aged Brie", SellIn = 2, Quality = 50}
+            }
+        };
+
+        //Act
+        app.UpdateQuality();
+
+        //Assert
+        app.Items[0].Quality.Should().Be(50);
     }
 
     [Fact]
@@ -290,4 +296,22 @@ public class ProgramTests
         app.UpdateQuality();
         app.Items[0].Quality.Should().Be(0);
     }
+
+    [Fact]
+    public void BackstagePassStopIncreasingAt50()
+    {
+        var app = new Program(){
+            Items = new List<Item>{
+                new Item { Name = "Backstage passes to a TAFKAL80ETC concert", SellIn = 20, Quality = 50}
+            }
+        };
+        app.UpdateQuality();
+        app.Items[0].Quality.Should().Be(50);
+    }
+
+    [Fact (Skip="Does not Assert anything")]
+    public void MainDoesSomethingAtAll(){
+        Program.Main(Array.Empty<String>());
+    }
+
 }
