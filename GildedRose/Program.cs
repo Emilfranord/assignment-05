@@ -8,7 +8,7 @@ namespace GildedRose
         public IList<Item>? Items;
         static void Main(string[] args)
         {
-            System.Console.WriteLine("OMGHAI!");
+            Console.WriteLine("OMGHAI!");
 
             var app = new Program()
             {
@@ -37,7 +37,6 @@ namespace GildedRose
                 Console.WriteLine("");
                 app.UpdateQuality();
             }
-
         }
 
         public void UpdateQuality()
@@ -115,7 +114,6 @@ namespace GildedRose
                 }
             }
         }
-
     }
 
     public class Item
