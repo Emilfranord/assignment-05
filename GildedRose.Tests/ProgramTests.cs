@@ -328,9 +328,19 @@ public class ProgramTests
         app.Items[0].Quality.Should().Be(50);
     }
 
-    [Fact (Skip="Does not Assert anything")]
+    [Fact]
     public void MainDoesSomethingAtAll(){
+        var writer = new StringWriter();
+        Console.SetOut(writer);
+
         Program.Main(Array.Empty<String>());
+
+        var output = writer.ToString();
+        writer.Close();
+
+        output.Should().Contain("OMGHAI!");
+        output.Should().Contain("day 30");
+        output.Should().Contain("day 0");
     }
 
 }
