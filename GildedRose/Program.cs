@@ -36,12 +36,12 @@ public class Program
         }
     }
 
-    internal int increase(int num){
-        return Math.Min(50, num+1);
+    internal int increase(int start, int extra = 1){
+        return Math.Min(50, start+extra);
     }
 
-    internal int decrease(int num){
-        return Math.Max(0, num-1);
+    internal int decrease(int start, int less = 1){
+        return Math.Max(0, start-less);
     }
 
     public void UpdateQuality()
@@ -51,6 +51,7 @@ public class Program
             bool isBrie = active.Name == "Aged Brie"; 
             bool isBackstage = active.Name == "Backstage passes to a TAFKAL80ETC concert";
             bool isSulfuras = active.Name == "Sulfuras, Hand of Ragnaros";
+            bool isStandardItem = !isBrie && !isBackstage;
 
             if(isSulfuras)
             {
@@ -65,7 +66,7 @@ public class Program
                 active.Quality = 0;
             }
 
-            if (!isBrie && !isBackstage)
+            if (isStandardItem)
             {
                 active.Quality = decrease(active.Quality);
             }
