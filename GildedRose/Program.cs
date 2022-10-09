@@ -23,18 +23,18 @@ public class Program
             }
         };
 
-        for (var i = 0; i < 31; i++)
-        {
-            Console.WriteLine("-------- day " + i + " --------");
-            Console.WriteLine("name, sellIn, quality");
-            for (var j = 0; j < app.Items.Count; j++)
+            for (var i = 0; i < 31; i++)
             {
-                Console.WriteLine(app.Items[j].Name + ", " + app.Items[j].SellIn + ", " + app.Items[j].Quality);
+                Console.WriteLine(String.Format("-------- day {0} --------", i));
+                Console.WriteLine("name, sellIn, quality");
+                foreach (Item item in app.Items)
+                {
+                    Console.WriteLine(item.Name + ", " + item.SellIn + ", " + item.Quality);
+                }
+                Console.WriteLine("");
+                app.UpdateQuality();
             }
-            Console.WriteLine("");
-            app.UpdateQuality();
         }
-    }
 
     public void UpdateQuality()
     {
