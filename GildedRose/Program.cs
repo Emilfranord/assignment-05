@@ -25,7 +25,7 @@ public class Program
 
         for (var i = 0; i < 31; i++)
         {
-            Console.WriteLine(String.Format("-------- day {0} --------", i));
+            Console.WriteLine(String.Format("-------- day {0} --------", i));   
             Console.WriteLine("name, sellIn, quality");
             foreach (Item item in app.Items)
             {
@@ -38,80 +38,85 @@ public class Program
 
     public void UpdateQuality()
     {
-        for (var i = 0; i < Items!.Count; i++)
+        foreach (Item active in Items!)
         {
-            if (Items[i].Name != "Aged Brie" && Items[i].Name != "Backstage passes to a TAFKAL80ETC concert")
+            bool isBrie = active.Name == "Aged Brie"; 
+            bool isBackstage = active.Name == "Backstage passes to a TAFKAL80ETC concert";
+            bool isSulfuras = active.Name == "Sulfuras, Hand of Ragnaros";
+
+            if (!isBrie && !isBackstage)
             {
-                if (Items[i].Quality > 0)
+                if (active.Quality > 0)
                 {
-                    if (Items[i].Name != "Sulfuras, Hand of Ragnaros")
+                    if (!isSulfuras)
                     {
-                        Items[i].Quality = Items[i].Quality - 1;
+                        active.Quality--;
                     }
                 }
             }
             else
             {
-                if (Items[i].Quality < 50)
+                if (active.Quality < 50)
                 {
-                    Items[i].Quality = Items[i].Quality + 1;
+                    active.Quality++;
 
-                    if (Items[i].Name == "Backstage passes to a TAFKAL80ETC concert")
+                    if (isBackstage)
                     {
-                        if (Items[i].SellIn < 11)
+                        if (active.SellIn < 11)
                         {
-                            if (Items[i].Quality < 50)
+                            if (active.Quality < 50)
                             {
-                                Items[i].Quality = Items[i].Quality + 1;
+                                active.Quality++;
                             }
                         }
 
-                        if (Items[i].SellIn < 6)
+                        if (active.SellIn < 6)
                         {
-                            if (Items[i].Quality < 50)
+                            if (active.Quality < 50)
                             {
-                                Items[i].Quality = Items[i].Quality + 1;
+                                active.Quality++;
                             }
                         }
                     }
                 }
             }
 
-            if (Items[i].Name != "Sulfuras, Hand of Ragnaros")
+            if (!isSulfuras)
             {
-                Items[i].SellIn = Items[i].SellIn - 1;
+                active.SellIn--;
             }
 
-            if (Items[i].SellIn < 0)
+            if (active.SellIn < 0)
             {
-                if (Items[i].Name != "Aged Brie")
+                if (!isBrie)
                 {
-                    if (Items[i].Name != "Backstage passes to a TAFKAL80ETC concert")
+                    if (!isBackstage)
                     {
-                        if (Items[i].Quality > 0)
+                        if (active.Quality > 0)
                         {
-                            if (Items[i].Name != "Sulfuras, Hand of Ragnaros")
+                            if (!isSulfuras)
                             {
-                                Items[i].Quality = Items[i].Quality - 1;
+                                active.Quality--;
                             }
                         }
                     }
                     else
                     {
-                        Items[i].Quality = Items[i].Quality - Items[i].Quality;
+                        active.Quality = 0;
                     }
                 }
                 else
                 {
-                    if (Items[i].Quality < 50)
+                    if (active.Quality < 50)
                     {
-                        Items[i].Quality = Items[i].Quality + 1;
+                        active.Quality++;
                     }
                 }
             }
         }
     }
 }
+
 
 public class Item
 {
