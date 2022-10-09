@@ -9,8 +9,27 @@ public class ProgramTests
         true.Should().BeTrue();
     }
 
+
     [Fact]
-    public void UpdateQuality_Does_Quality_Degrade() {
+    public void StadardItemNeverBelowZero()
+    {        
+        var app = new Program()
+        {
+            Items = new List<Item> {
+            new Item {Name = "+5 Dexterity Vest", SellIn = 50, Quality = 0},
+            new Item {Name = "+5 Dexterity Vest", SellIn = -10, Quality = 0}
+            }
+        };
+
+        app.UpdateQuality();
+
+        app.Items[0].Quality.Should().Be(0);
+        app.Items[1].Quality.Should().Be(0);
+    }
+
+    [Fact]
+    public void UpdateQuality_Does_Quality_Degrade()
+    {
         var app = new Program()
         {
             Items = new List<Item> {
