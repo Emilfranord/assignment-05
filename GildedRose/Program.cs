@@ -5,7 +5,7 @@ public class Program
     public IList<Item>? Items;
     public static void Main(string[] args)
     {
-        System.Console.WriteLine("OMGHAI!");
+        Console.WriteLine("OMGHAI!");
 
         var app = new Program()
         {
@@ -15,26 +15,26 @@ public class Program
                 new Item { Name = "Elixir of the Mongoose", SellIn = 5, Quality = 7 },
                 new Item { Name = "Sulfuras, Hand of Ragnaros", SellIn = 0, Quality = 80 },
                 new Item { Name = "Sulfuras, Hand of Ragnaros", SellIn = -1, Quality = 80 },
-                new Item {Name = "Backstage passes to a TAFKAL80ETC concert", SellIn = 15, Quality = 20},
-                new Item{Name = "Backstage passes to a TAFKAL80ETC concert",SellIn = 10,Quality = 49},
-                new Item{Name = "Backstage passes to a TAFKAL80ETC concert",SellIn = 5,Quality = 49},
+                new Item { Name = "Backstage passes to a TAFKAL80ETC concert", SellIn = 15, Quality = 20},
+                new Item { Name = "Backstage passes to a TAFKAL80ETC concert", SellIn = 10,Quality = 49},
+                new Item { Name = "Backstage passes to a TAFKAL80ETC concert", SellIn = 5,Quality = 49},
                 // this conjured item does not work properly yet
                 new Item { Name = "Conjured Mana Cake", SellIn = 3, Quality = 6 }
             }
         };
 
-            for (var i = 0; i < 31; i++)
+        for (var i = 0; i < 31; i++)
+        {
+            Console.WriteLine(String.Format("-------- day {0} --------", i));
+            Console.WriteLine("name, sellIn, quality");
+            foreach (Item item in app.Items)
             {
-                Console.WriteLine(String.Format("-------- day {0} --------", i));
-                Console.WriteLine("name, sellIn, quality");
-                foreach (Item item in app.Items)
-                {
-                    Console.WriteLine(item.Name + ", " + item.SellIn + ", " + item.Quality);
-                }
-                Console.WriteLine("");
-                app.UpdateQuality();
+                Console.WriteLine(item.Name + ", " + item.SellIn + ", " + item.Quality);
             }
+            Console.WriteLine("");
+            app.UpdateQuality();
         }
+    }
 
     public void UpdateQuality()
     {
@@ -111,7 +111,6 @@ public class Program
             }
         }
     }
-
 }
 
 public class Item
