@@ -36,6 +36,14 @@ public class Program
         }
     }
 
+    internal int increase(int num){
+        return Math.Min(50, num+1);
+    }
+
+    internal int decrease(int num){
+        return Math.Max(0, num-1);
+    }
+
     public void UpdateQuality()
     {
         foreach (Item active in Items!)
@@ -44,74 +52,58 @@ public class Program
             bool isBackstage = active.Name == "Backstage passes to a TAFKAL80ETC concert";
             bool isSulfuras = active.Name == "Sulfuras, Hand of Ragnaros";
 
+            if(isSulfuras)
+            {
+                return;
+            }
+
+            if(active.Quality > 50){
+                active.Quality = 50;
+            }
+
+            if(active.Quality < 0){
+                active.Quality = 0;
+            }
+
             if (!isBrie && !isBackstage)
             {
-                if (active.Quality > 0)
-                {
-                    if (!isSulfuras)
-                    {
-                        active.Quality--;
-                    }
-                }
+                active.Quality = decrease(active.Quality);
             }
             else
             {
-                if (active.Quality < 50)
+                active.Quality = increase(active.Quality);
+
+                if (isBackstage)
                 {
-                    active.Quality++;
-
-                    if (isBackstage)
+                    if (active.SellIn < 11)
                     {
-                        if (active.SellIn < 11)
-                        {
-                            if (active.Quality < 50)
-                            {
-                                active.Quality++;
-                            }
-                        }
+                       active.Quality = increase(active.Quality);
+                    }
 
-                        if (active.SellIn < 6)
-                        {
-                            if (active.Quality < 50)
-                            {
-                                active.Quality++;
-                            }
-                        }
+                    if (active.SellIn < 6)
+                    {
+                       active.Quality = increase(active.Quality);
                     }
                 }
             }
-
-            if (!isSulfuras)
-            {
-                active.SellIn--;
-            }
+            
+            active.SellIn--;
 
             if (active.SellIn < 0)
             {
-                if (!isBrie)
+                if(isBrie)
                 {
-                    if (!isBackstage)
-                    {
-                        if (active.Quality > 0)
-                        {
-                            if (!isSulfuras)
-                            {
-                                active.Quality--;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        active.Quality = 0;
-                    }
+                    active.Quality = increase(active.Quality);
+                    return;
                 }
-                else
+
+                if(isBackstage)
                 {
-                    if (active.Quality < 50)
-                    {
-                        active.Quality++;
-                    }
+                    active.Quality = 0;
+                    return;
                 }
+
+                active.Quality = decrease(active.Quality);
             }
         }
     }

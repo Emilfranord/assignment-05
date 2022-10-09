@@ -57,7 +57,7 @@ public class ProgramTests
         app.Items[0].Quality.Should().Be(18);
     }
 
-    [Fact (Skip = "Not implemented yet")]
+    [Fact]
     public void UpdateQuality_Quality_Is_Never_Above_50() {
         var app = new Program()
         {
@@ -70,12 +70,12 @@ public class ProgramTests
 
         app.UpdateQuality();
 
-        app.Items[0].Quality.Should().Be(50);
-        app.Items[1].Quality.Should().Be(50);
-        app.Items[2].Quality.Should().Be(50);
+        app.Items[0].Quality.Should().BeLessThanOrEqualTo(50);
+        app.Items[1].Quality.Should().BeLessThanOrEqualTo(50);
+        app.Items[2].Quality.Should().BeLessThanOrEqualTo(50);
     }
 
-    [Fact (Skip = "Not implemented yet")]
+    [Fact ]
     public void UpdateQuality_Quality_Of_Brie_Stops_At_50() {
         var app = new Program()
         {
@@ -213,7 +213,7 @@ public class ProgramTests
         app.Items[0].Quality.Should().Be(0);
     }
 
-    [Fact (Skip = "Not Defined In the current Build")]
+    [Fact]
     public void QualityStartingAsNegativeIsMadeNonNegative(){
         var app = new Program(){
             Items = new List<Item>{
@@ -244,7 +244,7 @@ public class ProgramTests
     }
 
     [Fact]
-    public void BackstagePassKeepsValue11DaysOut()
+    public void BackstagePassIncreaseValue11DaysOut()
     {
         var app = new Program(){
             Items = new List<Item>{
