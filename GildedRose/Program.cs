@@ -28,11 +28,11 @@ namespace GildedRose
 
             for (var i = 0; i < 31; i++)
             {
-                Console.WriteLine("-------- day " + i + " --------");
+                Console.WriteLine(String.Format("-------- day {0} --------", i));
                 Console.WriteLine("name, sellIn, quality");
-                for (var j = 0; j < app.Items.Count; j++)
+                foreach (Item item in app.Items)
                 {
-                    Console.WriteLine(app.Items[j].Name + ", " + app.Items[j].SellIn + ", " + app.Items[j].Quality);
+                    Console.WriteLine(item.Name + ", " + item.SellIn + ", " + item.Quality);
                 }
                 Console.WriteLine("");
                 app.UpdateQuality();
