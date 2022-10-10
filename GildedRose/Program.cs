@@ -46,69 +46,94 @@ public class Program
 
     public void UpdateQuality()
     {
-        foreach (Item active in Items!)
+        foreach (Item item in Items!)
         {
-            bool isBrie = active.Name == "Aged Brie"; 
-            bool isBackstage = active.Name == "Backstage passes to a TAFKAL80ETC concert";
-            bool isSulfuras = active.Name == "Sulfuras, Hand of Ragnaros";
-            bool isStandardItem = !isBrie && !isBackstage;
+            bool isBrie = item.Name == "Aged Brie"; 
+            bool isBackstage = item.Name == "Backstage passes to a TAFKAL80ETC concert";
+            bool isSulfuras = item.Name == "Sulfuras, Hand of Ragnaros";
+            bool isStandardItem = !isBrie && !isBackstage && !isSulfuras;
 
             if(isSulfuras)
             {
+                updateLegendary(item);
                 return;
             }
 
-            if(active.Quality > 50){
-                active.Quality = 50;
-            }
-
-            if(active.Quality < 0){
-                active.Quality = 0;
-            }
-
-            if (isStandardItem)
+            if(isBrie)
             {
-                active.Quality = decrease(active.Quality);
+                updateCheese(item);
             }
-            else
+
+            if(isBackstage)
             {
-                active.Quality = increase(active.Quality);
-
-                if (isBackstage)
-                {
-                    if (active.SellIn < 11)
-                    {
-                       active.Quality = increase(active.Quality);
-                    }
-
-                    if (active.SellIn < 6)
-                    {
-                       active.Quality = increase(active.Quality);
-                    }
-                }
+                updateBackstage(item);
             }
-            
-            active.SellIn--;
 
-            if (active.SellIn < 0)
+            if(isStandardItem)
             {
-                if(isBrie)
-                {
-                    active.Quality = increase(active.Quality);
-                    return;
-                }
-
-                if(isBackstage)
-                {
-                    active.Quality = 0;
-                    return;
-                }
-
-                active.Quality = decrease(active.Quality);
+                updateStandard(item);
             }
+
+            ensurePostCondition(item);
         }
     }
+
+    internal void updateStandard(Item item){
+        item.Quality = decrease(item.Quality);
+        item.SellIn--;
+        if(experied(item.SellIn)){
+            item.Quality = decrease(item.Quality);
+        }
+    }
+    internal void updateCheese(Item item){
+        item.Quality = increase(item.Quality);
+        item.SellIn--;
+        if(experied(item.SellIn))
+        {
+            item.Quality = increase(item.Quality);
+        }
+    }
+
+    internal void updateBackstage(Item item){
+        if(item.SellIn >= 11)
+        {
+            item.Quality = increase(item.Quality, 1);
+        }
+        if(item.SellIn is >= 6 and <= 10)
+        {
+            item.Quality = increase(item.Quality, 2);
+        }
+        if(item.SellIn is >= 0 and <= 5)
+        {
+            item.Quality = increase(item.Quality, 3);
+        }
+
+        item.SellIn--;
+
+        if(experied(item.SellIn))
+        {
+            item.Quality = 0;
+        }
+    }
+
+    internal void updateLegendary(Item item)
+    {
+        // empty on purpose
+    }
+
+    internal void ensurePostCondition(Item item)
+    {
+        item.Quality = increase(item.Quality, 0);
+        item.Quality = decrease(item.Quality, 0);
+    }
+
+    internal bool experied(int sellIn){
+        return sellIn < 0;
+    }
+
 }
+
+
 
 
 public class Item
