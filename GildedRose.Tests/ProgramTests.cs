@@ -62,6 +62,7 @@ public class ProgramTests
         var app = new Program()
         {
             Items = new List<Item> {
+            new Item { Name = "Elixir of the Mongoose", SellIn = 5, Quality = 100 },
             new Item { Name = "+5 Dexterity Vest", SellIn = 10, Quality = 55 },
             new Item { Name = "Elixir of the Mongoose", SellIn = 5, Quality = 52 },
             new Item { Name = "Backstage passes to a TAFKAL80ETC concert", SellIn = 15, Quality = 52 }
@@ -71,11 +72,32 @@ public class ProgramTests
         app.UpdateQuality();
 
         app.Items[0].Quality.Should().BeLessThanOrEqualTo(50);
-        app.Items[1].Quality.Should().BeLessThanOrEqualTo(50);
-        app.Items[2].Quality.Should().BeLessThanOrEqualTo(50);
+        app.Items[3].Quality.Should().BeLessThanOrEqualTo(50);
     }
 
-    [Fact ]
+
+    [Fact]
+    public void SeveralItemsInTheListAreHandled()
+    {
+        var app = new Program()
+        {
+            Items = new List<Item> {
+            new Item { Name = "+5 Dexterity Vest", SellIn = 10, Quality = 25 },
+            new Item { Name = "+5 Dexterity Vest", SellIn = 10, Quality = 30 },
+            new Item { Name = "Elixir of the Mongoose", SellIn = 5, Quality = 35 },
+            new Item { Name = "Sword of Caine", SellIn = 15, Quality = 40 }
+            }
+        };
+
+        app.UpdateQuality();
+
+        app.Items[0].Quality.Should().BeLessThan(25);
+        app.Items[1].Quality.Should().BeLessThan(30);
+        app.Items[2].Quality.Should().BeLessThan(35);
+        app.Items[2].Quality.Should().BeLessThan(40);
+    }
+
+    [Fact]
     public void UpdateQuality_Quality_Of_Brie_Stops_At_50() {
         var app = new Program()
         {

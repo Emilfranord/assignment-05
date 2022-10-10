@@ -18,7 +18,6 @@ public class Program
                 new Item { Name = "Backstage passes to a TAFKAL80ETC concert", SellIn = 15, Quality = 20},
                 new Item { Name = "Backstage passes to a TAFKAL80ETC concert", SellIn = 10, Quality = 49},
                 new Item { Name = "Backstage passes to a TAFKAL80ETC concert", SellIn = 5, Quality = 49},
-                // this conjured item does not work properly yet
                 new Item { Name = "Conjured Mana Cake", SellIn = 3, Quality = 6}
             }
         };
@@ -51,38 +50,53 @@ public class Program
             bool isBrie = item.Name == "Aged Brie"; 
             bool isBackstage = item.Name == "Backstage passes to a TAFKAL80ETC concert";
             bool isSulfuras = item.Name == "Sulfuras, Hand of Ragnaros";
-            bool isStandardItem = !isBrie && !isBackstage && !isSulfuras;
-
+            bool isConjured = item.Name!.Contains("Conjured", StringComparison.OrdinalIgnoreCase) ;
+            bool isStandardItem = !isBrie && !isBackstage && !isSulfuras && !isConjured;
+            
             if(isSulfuras)
             {
                 updateLegendary(item);
-                return;
+                // Do not Ensure Post Condition on Sulfuras
+                continue;
             }
+
+            ensurePostCondition(item);
 
             if(isBrie)
             {
                 updateCheese(item);
+                ensurePostCondition(item);
+                continue;
             }
 
             if(isBackstage)
             {
                 updateBackstage(item);
+                ensurePostCondition(item);
+                continue;
             }
 
             if(isStandardItem)
             {
                 updateStandard(item);
+                ensurePostCondition(item);
+                continue;
             }
 
-            ensurePostCondition(item);
+            if(isConjured)
+            {
+                updateStandard(item, 2);
+                ensurePostCondition(item);
+                continue;
+            }
         }
     }
 
-    internal void updateStandard(Item item){
-        item.Quality = decrease(item.Quality);
+    internal void updateStandard(Item item, int multiplier = 1){
+        item.Quality = decrease(item.Quality, multiplier);
         item.SellIn--;
         if(experied(item.SellIn)){
-            item.Quality = decrease(item.Quality);
+            item.Quality = decrease(item.Quality, multiplier);
         }
     }
     internal void updateCheese(Item item){
