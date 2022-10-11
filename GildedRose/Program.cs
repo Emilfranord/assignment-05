@@ -60,8 +60,6 @@ public class Program
                 continue;
             }
 
-            ensurePostCondition(item);
-
             if(isBrie)
             {
                 updateCheese(item);

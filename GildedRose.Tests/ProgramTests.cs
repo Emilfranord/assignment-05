@@ -350,6 +350,113 @@ public class ProgramTests
         app.Items[0].Quality.Should().Be(50);
     }
 
+
+    [Fact]
+    public void ConjuredDecreasesInQuality()
+    {
+        var app = new Program()
+        {
+            Items = new List<Item> {
+            new Item {Name = "Conjured +5 Dexterity Vest", SellIn = 10, Quality = 20}
+            }
+        };
+
+        app.UpdateQuality();
+
+        app.Items[0].SellIn.Should().BeLessThan(10);
+        app.Items[0].Quality.Should().BeLessThan(20);
+    }
+
+
+    [Fact]
+    public void ConjuredDecreasesInQualityDoubleSpeed()
+    {
+        var app = new Program()
+        {
+            Items = new List<Item> {
+            new Item {Name = "Conjured +5 Dexterity Vest", SellIn = 10, Quality = 20}
+            }
+        };
+
+        app.UpdateQuality();
+
+        app.Items[0].SellIn.Should().Be(9);
+        app.Items[0].Quality.Should().Be(18);
+    }
+
+
+    [Fact]
+    public void ConjuredHaveALowerBoundAtZero()
+    {
+        var app = new Program()
+        {
+            Items = new List<Item> {
+            new Item {Name = "Conjured +5 Dexterity Vest", SellIn = 10, Quality = 1}
+            }
+        };
+
+        app.UpdateQuality();
+
+        app.Items[0].Quality.Should().Be(0);
+    }
+
+
+    [Fact]
+    public void ConjuredThatAreTooOldDecreaseMore()
+    {
+        var app = new Program()
+        {
+            Items = new List<Item> {
+            new Item {Name = "Conjured +5 Dexterity Vest", SellIn = -2, Quality = 20}
+            }
+        };
+
+        app.UpdateQuality();
+
+        app.Items[0].Quality.Should().Be(16);
+    }
+
+
+    [Fact]
+    public void ConjuredDecreasesTwiseAsFastAboveSellBy(){
+        var initialQuality = 45;
+
+        var app = new Program()
+        {
+            Items = new List<Item> {
+                new Item {Name = "Conjured +5 Dexterity Vest", SellIn = 4, Quality = initialQuality},
+                new Item {Name = "+5 Dexterity Vest", SellIn = 4, Quality = initialQuality}
+            }
+        };
+
+        app.UpdateQuality(); 
+
+        var conDiff = initialQuality - app.Items[0].Quality;
+        var stdDiff = initialQuality - app.Items[1].Quality;
+
+        conDiff.Should().Be(2*stdDiff);
+    }
+
+    [Fact]
+    public void ConjuredDecreasesTwiseAsFastBelowSellBy(){
+        var initialQuality = 45;
+
+        var app = new Program()
+        {
+            Items = new List<Item> {
+                new Item {Name = "Conjured +5 Dexterity Vest", SellIn = -3, Quality = initialQuality},
+                new Item {Name = "+5 Dexterity Vest", SellIn = -3, Quality = initialQuality}
+            }
+        };
+
+        app.UpdateQuality(); 
+
+        var conDiff = initialQuality - app.Items[0].Quality;
+        var stdDiff = initialQuality - app.Items[1].Quality;
+
+        conDiff.Should().Be(2*stdDiff);
+    }
+
     [Fact]
     public void MainDoesSomethingAtAll(){
         var writer = new StringWriter();
